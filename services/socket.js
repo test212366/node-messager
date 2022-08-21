@@ -2,6 +2,14 @@ const socketio = require('socket.io'),
     UserService = require('./UserService')
 
 
+const getData = () => {
+		const date = new Date(),
+			newDate = new Date(6 * 60 * 60000 + date.valueOf() + 
+									  (date.getTimezoneOffset() * 60000))
+		 return newDate
+}
+ 
+
 
 module.exports = server => {
     //all connections users
@@ -26,14 +34,14 @@ module.exports = server => {
         })
         socket.on('CLIENT:SEND_MESSAGE_NO_IN_CHAT', message => {
             // responce send message for user who emit this message and view
-            io.to(message.idChat).emit('SERVER:RESPONCE_CHAT_MESSAGE', {...message, data: socket.handshake.time})
+            io.to(message.idChat).emit('SERVER:RESPONCE_CHAT_MESSAGE', {...message, data: getData()})
 
             // send user emit for update chats in client
-            users[message.userNameOn] && users[message.userNameOn].emit('SERVER:RESPONCE_MESSAGE_NO_IN_CHAT', {...message, data: socket.handshake.time})
+            users[message.userNameOn] && users[message.userNameOn].emit('SERVER:RESPONCE_MESSAGE_NO_IN_CHAT', {...message, data: getData()})
         })
         socket.on('CLIENT:SEND_MESSAGE_IN_CHAT', message => {
             //send message for all users in room and update messages in client
-            io.to(message.idChat).emit('SERVER:RESPONCE_CHAT_MESSAGE', {...message, data: socket.handshake.time})
+            io.to(message.idChat).emit('SERVER:RESPONCE_CHAT_MESSAGE', {...message, data: getData()})
         })
         socket.on('CLIENT:TYPED', data => {
             //emit room typed in all users and update typed in client
@@ -41,7 +49,7 @@ module.exports = server => {
         })
         // set offline for user
         socket.on('disconnect', async () => {
-            await UserService.updateOnline(socket.handshake.query.name, socket.handshake.time )
+            await UserService.updateOnline(socket.handshake.query.name, getData() )
             //delete user disconnect
             delete users[socket.handshake.query.name]
         } )
