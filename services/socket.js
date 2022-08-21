@@ -4,7 +4,7 @@ const socketio = require('socket.io'),
 
 	 const getData = () => {
 		const date = new Date(),
-			newDate = new Date(9 * 60 * 60000 + date.valueOf() + 
+			newDate = new Date(12 * 60 * 60000 + date.valueOf() + 
 									  (date.getTimezoneOffset() * 60000))
 		 return newDate
 }
@@ -49,7 +49,7 @@ module.exports = server => {
         })
         // set offline for user
         socket.on('disconnect', async () => {
-            await UserService.updateOnline(socket.handshake.query.name, socket.handshake.time )
+            await UserService.updateOnline(socket.handshake.query.name, getData() )
             //delete user disconnect
             delete users[socket.handshake.query.name]
         } )
