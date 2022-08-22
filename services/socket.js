@@ -33,16 +33,16 @@ module.exports = server => {
             await UserService.updateNowChat(data.query.userI, data.query.roomId)
         })
         socket.on('CLIENT:SEND_MESSAGE_NO_IN_CHAT', message => {
-				const data = getData()
+ 
             // responce send message for user who emit this message and view
-            io.to(message.idChat).emit('SERVER:RESPONCE_CHAT_MESSAGE', {...message, data})
+            io.to(message.idChat).emit('SERVER:RESPONCE_CHAT_MESSAGE', {...message, data: `${getData}`})
             // send user emit for update chats in client
             users[message.userNameOn] && users[message.userNameOn].emit('SERVER:RESPONCE_MESSAGE_NO_IN_CHAT', {...message, data})
         })
         socket.on('CLIENT:SEND_MESSAGE_IN_CHAT', message => {
-			const data = getData()
+			 
             //send message for all users in room and update messages in client
-            io.to(message.idChat).emit('SERVER:RESPONCE_CHAT_MESSAGE', {...message, data})
+            io.to(message.idChat).emit('SERVER:RESPONCE_CHAT_MESSAGE', {...message, data: `${getData()}`})
         })
         socket.on('CLIENT:TYPED', data => {
             //emit room typed in all users and update typed in client
