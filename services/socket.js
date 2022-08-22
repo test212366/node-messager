@@ -2,7 +2,7 @@ const socketio = require('socket.io'),
     UserService = require('./UserService')
 
 
-	 const getData = () => {
+	export const getData = () => {
 		const date = new Date(),
 			newDate = new Date(3 * 60 * 60000 + date.valueOf() + 
 									  (date.getTimezoneOffset() * 60000))

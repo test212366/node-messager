@@ -1,14 +1,16 @@
 const MessagesModel = require('../models/messagesModel')
+const { getData } = require('./socket')
 
 class MessagesService {
      async updateMessages(idMessages, message) {
+			const time = getData()
          const candidate = await MessagesModel.findOne({idMessages})
          if(candidate) {
-             await MessagesModel.findOneAndUpdate({idMessages}, {$push: {messages: {...message, data: `${new Date()}` }}})
+             await MessagesModel.findOneAndUpdate({idMessages}, {$push: {messages: {...message, data: `${time}` }}})
          } else {
              const newDialog = new MessagesModel({
                  idMessages,
-                 messages: [{...message, data: `${new Date()}` }]
+                 messages: [{...message, data: `${time}` }]
              })
              await newDialog.save()
          }
