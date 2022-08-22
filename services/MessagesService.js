@@ -1,5 +1,11 @@
 const MessagesModel = require('../models/messagesModel')
-const { getData } = require('./socket')
+const getData = () => {
+	const date = new Date(),
+		newDate = new Date(3 * 60 * 60000 + date.valueOf() + 
+								  (date.getTimezoneOffset() * 60000))
+	 return newDate
+}
+
 
 class MessagesService {
      async updateMessages(idMessages, message) {
