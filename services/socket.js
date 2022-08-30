@@ -33,11 +33,11 @@ module.exports = server => {
             await UserService.updateNowChat(data.query.userI, data.query.roomId)
         })
         socket.on('CLIENT:SEND_MESSAGE_NO_IN_CHAT', message => {
- 
+				/// ERRRORORORORORORORORORORORO
             // responce send message for user who emit this message and view
             io.to(message.idChat).emit('SERVER:RESPONCE_CHAT_MESSAGE', {...message, data: `${getData()}`})
             // send user emit for update chats in client
-            users[message.userNameOn] && users[message.userNameOn].emit('SERVER:RESPONCE_MESSAGE_NO_IN_CHAT', {...message, data})
+            users[message.userNameOn] && users[message.userNameOn].emit('SERVER:RESPONCE_MESSAGE_NO_IN_CHAT', {...message, data: `${getData()}`})
         })
         socket.on('CLIENT:SEND_MESSAGE_IN_CHAT', message => {
  
